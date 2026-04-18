@@ -14,7 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      comment_triggers: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          match_any_word: boolean
+          name: string
+          post_url: string | null
+          reply_template: string
+          send_dm: boolean
+          trigger_keyword: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          match_any_word?: boolean
+          name: string
+          post_url?: string | null
+          reply_template: string
+          send_dm?: boolean
+          trigger_keyword?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          match_any_word?: boolean
+          name?: string
+          post_url?: string | null
+          reply_template?: string
+          send_dm?: boolean
+          trigger_keyword?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      dm_flows: {
+        Row: {
+          ai_reply_template: string
+          created_at: string
+          enabled: boolean
+          follow_prompt: string
+          id: string
+          match_any_word: boolean
+          name: string
+          require_follow: boolean
+          trigger_keyword: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_reply_template: string
+          created_at?: string
+          enabled?: boolean
+          follow_prompt?: string
+          id?: string
+          match_any_word?: boolean
+          name: string
+          require_follow?: boolean
+          trigger_keyword?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_reply_template?: string
+          created_at?: string
+          enabled?: boolean
+          follow_prompt?: string
+          id?: string
+          match_any_word?: boolean
+          name?: string
+          require_follow?: boolean
+          trigger_keyword?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          created_at: string
+          followed: boolean
+          id: string
+          instagram_handle: string
+          name: string | null
+          source: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          followed?: boolean
+          id?: string
+          instagram_handle: string
+          name?: string | null
+          source?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          followed?: boolean
+          id?: string
+          instagram_handle?: string
+          name?: string | null
+          source?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          instagram_connected: boolean
+          instagram_handle: string | null
+          subscription_plan: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          instagram_connected?: boolean
+          instagram_handle?: string | null
+          subscription_plan?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          instagram_connected?: boolean
+          instagram_handle?: string | null
+          subscription_plan?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
