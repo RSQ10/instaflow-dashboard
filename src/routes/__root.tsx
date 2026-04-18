@@ -33,8 +33,16 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Replyloop — Instagram DM & Comment Automation" },
+      { title: "SmoothChatAi — Instagram DM & Comment Automation" },
       { name: "description", content: "Automate Instagram DMs and comment replies with AI. Capture leads from every interaction." },
+      { property: "og:title", content: "SmoothChatAi — Instagram DM & Comment Automation" },
+      { name: "twitter:title", content: "SmoothChatAi — Instagram DM & Comment Automation" },
+      { property: "og:description", content: "Automate Instagram DMs and comment replies with AI. Capture leads from every interaction." },
+      { name: "twitter:description", content: "Automate Instagram DMs and comment replies with AI. Capture leads from every interaction." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e7610238-23fa-4c9d-8f9b-77f39dc533e4/id-preview-f9b7b15f--9bb6be0c-2c30-4065-be79-b393a4796356.lovable.app-1776485213616.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e7610238-23fa-4c9d-8f9b-77f39dc533e4/id-preview-f9b7b15f--9bb6be0c-2c30-4065-be79-b393a4796356.lovable.app-1776485213616.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
