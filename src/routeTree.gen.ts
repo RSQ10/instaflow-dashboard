@@ -14,6 +14,10 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as DashboardTriggersRouteImport } from './routes/dashboard.triggers'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardLeadsRouteImport } from './routes/dashboard.leads'
+import { Route as DashboardFlowsRouteImport } from './routes/dashboard.flows'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -40,18 +44,46 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardTriggersRoute = DashboardTriggersRouteImport.update({
+  id: '/triggers',
+  path: '/triggers',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLeadsRoute = DashboardLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardFlowsRoute = DashboardFlowsRouteImport.update({
+  id: '/flows',
+  path: '/flows',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard/flows': typeof DashboardFlowsRoute
+  '/dashboard/leads': typeof DashboardLeadsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/triggers': typeof DashboardTriggersRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard/flows': typeof DashboardFlowsRoute
+  '/dashboard/leads': typeof DashboardLeadsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/triggers': typeof DashboardTriggersRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -60,14 +92,45 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard/flows': typeof DashboardFlowsRoute
+  '/dashboard/leads': typeof DashboardLeadsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/triggers': typeof DashboardTriggersRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/signup' | '/dashboard/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/dashboard/flows'
+    | '/dashboard/leads'
+    | '/dashboard/settings'
+    | '/dashboard/triggers'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard' | '/login' | '/signup' | '/dashboard/'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/dashboard/flows'
+    | '/dashboard/leads'
+    | '/dashboard/settings'
+    | '/dashboard/triggers'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/dashboard/flows'
+    | '/dashboard/leads'
+    | '/dashboard/settings'
+    | '/dashboard/triggers'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -114,14 +177,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/triggers': {
+      id: '/dashboard/triggers'
+      path: '/triggers'
+      fullPath: '/dashboard/triggers'
+      preLoaderRoute: typeof DashboardTriggersRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/leads': {
+      id: '/dashboard/leads'
+      path: '/leads'
+      fullPath: '/dashboard/leads'
+      preLoaderRoute: typeof DashboardLeadsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/flows': {
+      id: '/dashboard/flows'
+      path: '/flows'
+      fullPath: '/dashboard/flows'
+      preLoaderRoute: typeof DashboardFlowsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
 interface DashboardRouteChildren {
+  DashboardFlowsRoute: typeof DashboardFlowsRoute
+  DashboardLeadsRoute: typeof DashboardLeadsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardTriggersRoute: typeof DashboardTriggersRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardFlowsRoute: DashboardFlowsRoute,
+  DashboardLeadsRoute: DashboardLeadsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardTriggersRoute: DashboardTriggersRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
