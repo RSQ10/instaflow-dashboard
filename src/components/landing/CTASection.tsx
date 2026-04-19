@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function CTASection() {
   return (
@@ -17,13 +18,12 @@ export function CTASection() {
             No code. No complexity. Just results.
           </p>
           <div className="relative mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a
-              href="#"
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-glow px-8 py-4 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-95 transition-all hover:-translate-y-0.5"
-            >
+            <Link
+              to="/signup"
+              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-glow px-8 py-4 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-95 transition-all hover:-translate-y-0.5">
               Start Free Trial
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
+            </Link>
             <span className="text-xs text-muted-foreground">
               14-day free trial · No credit card required
             </span>
