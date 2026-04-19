@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { MessageCircle, Menu, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
 const links = [
   { label: "Features", href: "#features" },
   { label: "Automations", href: "#how" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Docs", href: "#docs" },
+  { label: "Pricing", href: "#cta" },
+  { label: "Docs", href: "#features" },
 ];
 
 export function Navbar() {
@@ -20,6 +21,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const scrollTo = (href: string) => {
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    setOpen(false);
+  };
+
   return (
     <header
       className={cn(
@@ -27,8 +35,7 @@ export function Navbar() {
         scrolled
           ? "backdrop-blur-xl bg-background/70 border-b border-border shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)]"
           : "bg-transparent",
-      )}
-    >
+      )}>
       <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-2 font-semibold text-foreground">
           <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow shadow-[var(--shadow-glow)]">
@@ -40,27 +47,27 @@ export function Navbar() {
         <ul className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
           {links.map((l) => (
             <li key={l.href}>
-              <a href={l.href} className="hover:text-foreground transition-colors">
+              <button
+                onClick={() => scrollTo(l.href)}
+                className="hover:text-foreground transition-colors">
                 {l.label}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
 
         <div className="hidden md:flex items-center gap-3">
-          <a
-            href="#cta"
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary-glow px-5 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-95 transition-opacity"
-          >
+          <Link
+            to="/signup"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary-glow px-5 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-95 transition-opacity">
             Start Free Trial
-          </a>
+          </Link>
         </div>
 
         <button
           aria-label="Menu"
           className="md:hidden text-foreground p-2"
-          onClick={() => setOpen((v) => !v)}
-        >
+          onClick={() => setOpen((v) => !v)}>
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
@@ -70,23 +77,20 @@ export function Navbar() {
           <ul className="px-6 py-4 space-y-3 text-sm">
             {links.map((l) => (
               <li key={l.href}>
-                <a
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="block text-muted-foreground hover:text-foreground"
-                >
+                <button
+                  onClick={() => scrollTo(l.href)}
+                  className="block w-full text-left text-muted-foreground hover:text-foreground">
                   {l.label}
-                </a>
+                </button>
               </li>
             ))}
             <li>
-              <a
-                href="#cta"
+              <Link
+                to="/signup"
                 onClick={() => setOpen(false)}
-                className="block text-center rounded-full bg-gradient-to-r from-primary to-primary-glow px-4 py-2 text-primary-foreground font-medium"
-              >
+                className="block text-center rounded-full bg-gradient-to-r from-primary to-primary-glow px-4 py-2 text-primary-foreground font-medium">
                 Start Free Trial
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
