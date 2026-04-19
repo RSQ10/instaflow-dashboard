@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { AmbientOrbs } from "@/components/AmbientOrbs";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -37,73 +38,64 @@ function Login() {
   };
 
   return (
-    <div className="flex min-h-screen">
-      <div className="hidden flex-1 bg-gradient-brand p-12 lg:flex lg:flex-col lg:justify-between">
-        <div className="flex items-center gap-2.5 text-white">
-          <Sparkles className="h-6 w-6" strokeWidth={2.5} />
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background p-6">
+      <AmbientOrbs variant="auth" />
+
+      <div className="w-full max-w-md animate-fade-in-up">
+        <div className="mb-6 flex items-center justify-center gap-2.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-brand shadow-glow animate-float-slow">
+            <Sparkles className="h-5 w-5 text-white" strokeWidth={2.5} />
+          </div>
           <span className="font-display text-xl font-bold">Replyloop</span>
         </div>
-        <div className="text-white">
-          <h2 className="font-display text-4xl font-bold leading-tight">
-            Reply to every comment.<br />Capture every lead.
-          </h2>
-          <p className="mt-4 max-w-sm text-white/80">
-            AI-powered Instagram automation that feels personal — not spammy.
-          </p>
-        </div>
-        <div className="text-sm text-white/60">© Replyloop · Instagram automation</div>
-      </div>
 
-      <div className="flex flex-1 items-center justify-center p-6">
-        <div className="w-full max-w-sm">
-          <div className="lg:hidden mb-8 flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-brand">
-              <Sparkles className="h-5 w-5 text-white" strokeWidth={2.5} />
-            </div>
-            <span className="font-display text-lg font-bold">Replyloop</span>
+        <div className="gradient-border shadow-float">
+          <div className="glass-strong rounded-[inherit] p-8">
+            <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Sign in to your dashboard</p>
+
+            <form onSubmit={onSubmit} className="mt-7 space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@brand.com"
+                  className="bg-background/70 transition-shadow focus:shadow-glow"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="bg-background/70 transition-shadow focus:shadow-glow"
+                />
+              </div>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-brand text-white shadow-glow hover:opacity-95 hover:scale-[1.01] active:scale-[0.99] transition-transform"
+              >
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Sign in
+              </Button>
+            </form>
+
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Don't have an account?{" "}
+              <Link to="/signup" className="font-medium text-foreground underline-offset-4 hover:underline">
+                Create one
+              </Link>
+            </p>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Sign in to your dashboard</p>
-
-          <form onSubmit={onSubmit} className="mt-8 space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@brand.com"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-              />
-            </div>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-brand text-white shadow-soft hover:opacity-95"
-            >
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Sign in
-            </Button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/signup" className="font-medium text-foreground underline-offset-4 hover:underline">
-              Create one
-            </Link>
-          </p>
         </div>
       </div>
     </div>
