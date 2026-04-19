@@ -6,9 +6,9 @@ import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
 
-export const Route = createFileRoute("/")(({
+export const Route = createFileRoute("/")({
   component: Index,
-}));
+});
 
 function Index() {
   return (
