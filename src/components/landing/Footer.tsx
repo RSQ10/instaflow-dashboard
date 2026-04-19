@@ -8,7 +8,7 @@ export function Footer() {
           <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow">
             <MessageCircle className="h-4 w-4 text-primary-foreground" />
           </span>
-          InstaFlow
+          SmoothChat
         </a>
         <ul className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
           <li><a href="#features" className="hover:text-foreground transition-colors">Features</a></li>
@@ -17,7 +17,7 @@ export function Footer() {
           <li><a href="#contact" className="hover:text-foreground transition-colors">Contact</a></li>
         </ul>
         <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} InstaFlow. All rights reserved.
+          © {new Date().getFullYear()} SmoothChat. All rights reserved.
         </p>
       </div>
     </footer>

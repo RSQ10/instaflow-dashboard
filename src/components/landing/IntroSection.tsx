@@ -22,7 +22,7 @@ export function IntroSection() {
         </h2>
 
         <p className="mt-5 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-          InstaFlow helps you automate replies, capture leads, and turn every message into an
+          SmoothChat helps you automate replies, capture leads, and turn every message into an
           opportunity.
         </p>
 
