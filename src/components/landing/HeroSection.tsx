@@ -82,7 +82,7 @@ export function HeroSection() {
           <nav className="flex items-center justify-between py-5 px-8">
             <a href="#" className="flex items-center gap-2">
               <span className="font-display text-foreground text-lg font-semibold tracking-tight">
-                InstaFlow
+                SmoothChat
               </span>
             </a>
 
@@ -115,15 +115,15 @@ export function HeroSection() {
               className="font-display font-normal leading-[1.02] tracking-[-0.024em] text-foreground"
               style={{ fontSize: "clamp(64px, 16vw, 220px)" }}
             >
-              Insta{" "}
+              Smooth{" "}
               <span
                 className="bg-clip-text text-transparent"
                 style={{
                   backgroundImage:
-                    "linear-gradient(to left, #6366f1, #a855f7, #fcd34d)",
+                    "linear-gradient(to left, #10b981, #34d399, #a7f3d0)",
                 }}
               >
-                Flow
+                Chat
               </span>
             </h1>
             <p
