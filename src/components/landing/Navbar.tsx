@@ -48,7 +48,7 @@ export function Navbar() {
         </ul>
 
         <div className="hidden md:flex items-center gap-3">
-          
+          <a
             href="#cta"
             className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary-glow px-5 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-95 transition-opacity"
           >
@@ -70,7 +70,7 @@ export function Navbar() {
           <ul className="px-6 py-4 space-y-3 text-sm">
             {links.map((l) => (
               <li key={l.href}>
-                
+                <a
                   href={l.href}
                   onClick={() => setOpen(false)}
                   className="block text-muted-foreground hover:text-foreground"
@@ -80,7 +80,7 @@ export function Navbar() {
               </li>
             ))}
             <li>
-              
+              <a
                 href="#cta"
                 onClick={() => setOpen(false)}
                 className="block text-center rounded-full bg-gradient-to-r from-primary to-primary-glow px-4 py-2 text-primary-foreground font-medium"

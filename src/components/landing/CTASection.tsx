@@ -17,7 +17,7 @@ export function CTASection() {
             No code. No complexity. Just results.
           </p>
           <div className="relative mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            
+            <a
               href="#"
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-glow px-8 py-4 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-95 transition-all hover:-translate-y-0.5"
             >
