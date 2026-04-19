@@ -160,7 +160,7 @@ function FlowsPage() {
             {flows.map((flow) => (
               <div
                 key={flow.id}
-                className="rounded-2xl border border-border bg-card p-5 shadow-soft transition-shadow hover:shadow-md"
+                className="lift-on-hover glass rounded-2xl border border-border p-5 shadow-soft animate-fade-in-up"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
@@ -218,7 +218,7 @@ function FlowsPage() {
 
 function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
-    <div className="rounded-2xl border border-dashed border-border bg-card/50 p-16 text-center">
+    <div className="glass rounded-2xl border border-dashed border-border p-16 text-center animate-fade-in-up">
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-soft">
         <MessageSquareHeart className="h-7 w-7 text-foreground" strokeWidth={1.75} />
       </div>

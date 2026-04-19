@@ -197,7 +197,7 @@ function TriggersPage() {
         {isLoading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
         ) : triggers.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border bg-card/50 p-16 text-center">
+          <div className="glass rounded-2xl border border-dashed border-border p-16 text-center animate-fade-in-up">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-soft">
               <MessageCircle className="h-7 w-7 text-foreground" strokeWidth={1.75} />
             </div>
@@ -209,7 +209,7 @@ function TriggersPage() {
         ) : (
           <div className="space-y-3">
             {triggers.map((t) => (
-              <div key={t.id} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+              <div key={t.id} className="lift-on-hover glass rounded-2xl border border-border p-5 shadow-soft animate-fade-in-up">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">

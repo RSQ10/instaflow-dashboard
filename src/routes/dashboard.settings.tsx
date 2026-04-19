@@ -100,7 +100,7 @@ function SettingsPage() {
       <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
       <p className="mt-1 text-sm text-muted-foreground">Manage your Instagram connection and plan.</p>
 
-      <section className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-soft">
+      <section className="mt-8 glass rounded-2xl border border-border p-6 shadow-soft animate-fade-in-up">
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-brand">
             <Instagram className="h-6 w-6 text-white" strokeWidth={2} />
@@ -153,7 +153,7 @@ function SettingsPage() {
       <section className="mt-8">
         <h2 className="font-display text-lg font-semibold">Subscription plan</h2>
         <p className="mt-1 text-sm text-muted-foreground">Upgrade anytime, cancel anytime.</p>
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
+        <div className="mt-5 grid gap-4 perspective-card md:grid-cols-3">
           {PLANS.map((plan) => {
             const active = currentPlan === plan.id;
             const Icon = plan.icon;
@@ -161,10 +161,10 @@ function SettingsPage() {
               <div
                 key={plan.id}
                 className={[
-                  "rounded-2xl border p-6 shadow-soft transition-all",
+                  "tilt-3d rounded-2xl border p-6 shadow-soft animate-fade-in-up",
                   active
-                    ? "border-primary/30 bg-gradient-soft ring-2 ring-primary/30"
-                    : "border-border bg-card",
+                    ? "border-primary/40 bg-gradient-soft ring-2 ring-primary/30 shadow-glow"
+                    : "glass border-border",
                 ].join(" ")}
               >
                 <div className="flex items-center justify-between">

@@ -126,7 +126,7 @@ function LeadsPage() {
         />
       </div>
 
-      <div className="mt-6 rounded-2xl border border-border bg-card shadow-soft">
+      <div className="mt-6 glass rounded-2xl border border-border shadow-soft">
         <div className="flex items-center justify-between border-b border-border p-4">
           <div className="relative w-full max-w-xs">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -164,7 +164,7 @@ function LeadsPage() {
             </TableHeader>
             <TableBody>
               {filtered.map((l) => (
-                <TableRow key={l.id}>
+                <TableRow key={l.id} className="row-glow transition-colors">
                   <TableCell className="font-medium">{l.name ?? "—"}</TableCell>
                   <TableCell className="text-primary">@{l.instagram_handle}</TableCell>
                   <TableCell>
@@ -192,9 +192,9 @@ function LeadsPage() {
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+    <div className="lift-on-hover glass rounded-2xl border border-border p-5 shadow-soft">
       <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</div>
-      <div className="mt-2 font-display text-3xl font-bold">{value}</div>
+      <div className="mt-2 font-display text-3xl font-bold text-gradient-brand">{value}</div>
     </div>
   );
 }
