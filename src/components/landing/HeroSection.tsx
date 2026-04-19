@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
 
 const VIDEO_URL =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_065045_c44942da-53c6-4804-b734-f9e07fc22e08.mp4";
@@ -8,7 +9,12 @@ const FADE_MS = 500;
 
 const brands = ["Vortex", "Nimbus", "Prysma", "Cirrus", "Kynder", "Halcyn"];
 
-import { useEffect, useRef } from "react";
+const navLinks = [
+  { label: "Features", href: "#features" },
+  { label: "Solutions", href: "#how" },
+  { label: "Plans", href: "#cta" },
+  { label: "Learning", href: "#features" },
+];
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -52,6 +58,12 @@ export function HeroSection() {
     };
   }, []);
 
+  const scrollTo = (href: string) => {
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Background video */}
@@ -87,23 +99,24 @@ export function HeroSection() {
             </a>
 
             <div className="hidden md:flex items-center gap-8">
-              <button className="inline-flex items-center gap-1 text-foreground/90 hover:text-foreground transition-colors text-sm">
-                Features <ChevronDown className="h-4 w-4" />
-              </button>
-              <button className="text-foreground/90 hover:text-foreground transition-colors text-sm">
-                Solutions
-              </button>
-              <button className="text-foreground/90 hover:text-foreground transition-colors text-sm">
-                Plans
-              </button>
-              <button className="inline-flex items-center gap-1 text-foreground/90 hover:text-foreground transition-colors text-sm">
-                Learning <ChevronDown className="h-4 w-4" />
-              </button>
+              {navLinks.map((link) => (
+                <button
+                  key={link.label}
+                  onClick={() => scrollTo(link.href)}
+                  className="inline-flex items-center gap-1 text-foreground/90 hover:text-foreground transition-colors text-sm">
+                  {link.label}
+                  {(link.label === "Features" || link.label === "Learning") && (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
+              ))}
             </div>
 
-            <Button variant="heroSecondary" className="rounded-full px-4 py-2 h-auto">
+            <Link
+              to="/signup"
+              className="liquid-glass rounded-full px-4 py-2 text-sm font-medium text-foreground hover:bg-white/[0.04] transition-colors">
               Sign Up
-            </Button>
+            </Link>
           </nav>
           <div className="mt-[3px] h-px w-full bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
         </header>
@@ -113,34 +126,29 @@ export function HeroSection() {
           <div className="text-center">
             <h1
               className="font-display font-normal leading-[1.02] tracking-[-0.024em] text-foreground"
-              style={{ fontSize: "clamp(64px, 16vw, 220px)" }}
-            >
+              style={{ fontSize: "clamp(64px, 16vw, 220px)" }}>
               Smooth{" "}
               <span
                 className="bg-clip-text text-transparent"
                 style={{
-                  backgroundImage:
-                    "linear-gradient(to left, #10b981, #34d399, #a7f3d0)",
-                }}
-              >
+                  backgroundImage: "linear-gradient(to left, #10b981, #34d399, #a7f3d0)",
+                }}>
                 Chat
               </span>
             </h1>
             <p
               className="text-lg leading-8 max-w-md mx-auto mt-[9px] opacity-80"
-              style={{ color: "var(--hero-sub)" }}
-            >
+              style={{ color: "var(--hero-sub)" }}>
               The most powerful AI ever deployed
               <br />
               in DM automation.
             </p>
-            <Button
-              variant="heroSecondary"
-              className="rounded-full mt-[25px] h-auto"
-              style={{ padding: "24px 29px" }}
-            >
+            <Link
+              to="/signup"
+              className="liquid-glass inline-flex items-center justify-center rounded-full mt-[25px] h-auto text-foreground hover:bg-white/[0.04] transition-colors"
+              style={{ padding: "24px 29px" }}>
               Start Free Trial
-            </Button>
+            </Link>
           </div>
         </div>
 
