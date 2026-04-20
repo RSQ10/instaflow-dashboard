@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { MessageCircle, Menu, X } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
 const links = [
   { label: "Features", href: "#features" },
-  { label: "Automations", href: "#how" },
-  { label: "Pricing", href: "#cta" },
-  { label: "Docs", href: "#features" },
+  { label: "Solutions", href: "#how" },
+  { label: "Plans", href: "#cta" },
+  { label: "Learning", href: "#features" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -21,11 +23,23 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = (href: string) => {
+  const goTo = (href: string) => {
     const id = href.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
     setOpen(false);
+
+    const scrollToId = () => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    if (location.pathname !== "/") {
+      navigate({ to: "/" }).then(() => {
+        // wait for landing page to mount
+        setTimeout(scrollToId, 120);
+      });
+    } else {
+      scrollToId();
+    }
   };
 
   return (
@@ -37,18 +51,19 @@ export function Navbar() {
           : "bg-transparent",
       )}>
       <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2 font-semibold text-foreground">
+        <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
           <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow shadow-[var(--shadow-glow)]">
             <MessageCircle className="h-4 w-4 text-primary-foreground" />
           </span>
           <span className="tracking-tight">SmoothChat</span>
-        </a>
+        </Link>
 
         <ul className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
           {links.map((l) => (
-            <li key={l.href}>
+            <li key={l.label}>
               <button
-                onClick={() => scrollTo(l.href)}
+                type="button"
+                onClick={() => goTo(l.href)}
                 className="hover:text-foreground transition-colors">
                 {l.label}
               </button>
@@ -76,9 +91,10 @@ export function Navbar() {
         <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl">
           <ul className="px-6 py-4 space-y-3 text-sm">
             {links.map((l) => (
-              <li key={l.href}>
+              <li key={l.label}>
                 <button
-                  onClick={() => scrollTo(l.href)}
+                  type="button"
+                  onClick={() => goTo(l.href)}
                   className="block w-full text-left text-muted-foreground hover:text-foreground">
                   {l.label}
                 </button>
