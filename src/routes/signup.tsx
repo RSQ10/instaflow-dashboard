@@ -11,8 +11,8 @@ import { AmbientOrbs } from "@/components/AmbientOrbs";
 export const Route = createFileRoute("/signup")({
   head: () => ({
     meta: [
-      { title: "Create account — Replyloop" },
-      { name: "description", content: "Create your Replyloop account and start automating Instagram." },
+      { title: "Create account — SmoothChat" },
+      { name: "description", content: "Create your SmoothChat account and start automating Instagram." },
     ],
   }),
   component: Signup,
@@ -54,7 +54,7 @@ function Signup() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-brand shadow-glow animate-float-slow">
             <Sparkles className="h-5 w-5 text-white" strokeWidth={2.5} />
           </div>
-          <span className="font-display text-xl font-bold">Replyloop</span>
+          <span className="font-display text-xl font-bold">SmoothChat</span>
         </div>
 
         <div className="gradient-border shadow-float">
