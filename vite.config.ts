@@ -11,4 +11,7 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
   ],
+  esbuild: {
+    target: "es2022",
+  },
 });
