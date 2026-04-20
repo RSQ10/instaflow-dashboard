@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 
 const VIDEO_URL =
@@ -19,6 +19,8 @@ const navLinks = [
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const rafRef = useRef<number | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -60,8 +62,25 @@ export function HeroSection() {
 
   const scrollTo = (href: string) => {
     const id = href.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    const doScroll = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return true;
+      }
+      return false;
+    };
+    if (location.pathname !== "/") {
+      navigate({ to: "/" }).then(() => {
+        // wait for landing sections to mount
+        setTimeout(doScroll, 150);
+      });
+      return;
+    }
+    if (!doScroll()) {
+      // retry once next frame in case section is lazily mounted
+      requestAnimationFrame(() => doScroll());
+    }
   };
 
   return (
