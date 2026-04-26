@@ -7,8 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
@@ -130,22 +128,31 @@ export type Database = {
       }
       user_settings: {
         Row: {
+          instagram_access_token: string | null
           instagram_connected: boolean
           instagram_handle: string | null
+          instagram_user_id: string | null
+          meta_app_id: string | null
           subscription_plan: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          instagram_access_token?: string | null
           instagram_connected?: boolean
           instagram_handle?: string | null
+          instagram_user_id?: string | null
+          meta_app_id?: string | null
           subscription_plan?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          instagram_access_token?: string | null
           instagram_connected?: boolean
           instagram_handle?: string | null
+          instagram_user_id?: string | null
+          meta_app_id?: string | null
           subscription_plan?: string
           updated_at?: string
           user_id?: string
@@ -172,7 +179,7 @@ type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
 type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
-export type Tables<
+export type Tables
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
@@ -201,7 +208,7 @@ export type Tables<
       : never
     : never
 
-export type TablesInsert<
+export type TablesInsert
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
@@ -226,7 +233,7 @@ export type TablesInsert<
       : never
     : never
 
-export type TablesUpdate<
+export type TablesUpdate
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
@@ -251,7 +258,7 @@ export type TablesUpdate<
       : never
     : never
 
-export type Enums<
+export type Enums
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
@@ -268,7 +275,7 @@ export type Enums<
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
-export type CompositeTypes<
+export type CompositeTypes
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
