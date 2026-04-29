@@ -1,19 +1,30 @@
 import { useEffect, useState } from "react";
-import { MessageCircle, Menu, X } from "lucide-react";
-import { Link, useNavigate, useLocation } from "@tanstack/react-router";
+import { MessageCircle, Menu, X, ChevronDown } from "lucide-react";
+import { Link, useLocation } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { label: "Features", href: "#features" },
-  { label: "Solutions", href: "#how" },
-  { label: "Plans", href: "#cta" },
-  { label: "Learning", href: "#features" },
+  {
+    label: "Features",
+    href: "/features",
+  },
+  {
+    label: "Solutions",
+    href: "/solutions",
+  },
+  {
+    label: "Plans",
+    href: "/plans",
+  },
+  {
+    label: "Learning",
+    href: "/learning",
+  },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -22,25 +33,6 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const goTo = (href: string) => {
-    const id = href.replace("#", "");
-    setOpen(false);
-
-    const scrollToId = () => {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-
-    if (location.pathname !== "/") {
-      navigate({ to: "/" }).then(() => {
-        // wait for landing page to mount
-        setTimeout(scrollToId, 120);
-      });
-    } else {
-      scrollToId();
-    }
-  };
 
   return (
     <header
@@ -59,19 +51,30 @@ export function Navbar() {
         </Link>
 
         <ul className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-          {links.map((l) => (
-            <li key={l.label}>
-              <button
-                type="button"
-                onClick={() => goTo(l.href)}
-                className="hover:text-foreground transition-colors">
-                {l.label}
-              </button>
-            </li>
-          ))}
+          {links.map((l) => {
+            const isActive = location.pathname === l.href;
+            return (
+              <li key={l.label}>
+                <Link
+                  to={l.href}
+                  className={cn(
+                    "hover:text-foreground transition-colors",
+                    isActive && "text-foreground font-medium"
+                  )}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="hidden md:flex items-center gap-3">
+          <Link
+            to="/login"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2">
+            Sign in
+          </Link>
           <Link
             to="/signup"
             className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary-glow px-5 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-95 transition-opacity">
@@ -90,16 +93,30 @@ export function Navbar() {
       {open && (
         <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl">
           <ul className="px-6 py-4 space-y-3 text-sm">
-            {links.map((l) => (
-              <li key={l.label}>
-                <button
-                  type="button"
-                  onClick={() => goTo(l.href)}
-                  className="block w-full text-left text-muted-foreground hover:text-foreground">
-                  {l.label}
-                </button>
-              </li>
-            ))}
+            {links.map((l) => {
+              const isActive = location.pathname === l.href;
+              return (
+                <li key={l.label}>
+                  <Link
+                    to={l.href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "block w-full text-left text-muted-foreground hover:text-foreground transition-colors",
+                      isActive && "text-foreground font-medium"
+                    )}>
+                    {l.label}
+                  </Link>
+                </li>
+              );
+            })}
+            <li>
+              <Link
+                to="/login"
+                onClick={() => setOpen(false)}
+                className="block text-center text-muted-foreground hover:text-foreground py-1">
+                Sign in
+              </Link>
+            </li>
             <li>
               <Link
                 to="/signup"
