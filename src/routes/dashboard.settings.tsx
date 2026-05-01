@@ -26,12 +26,14 @@ const SCOPES = [
   "instagram_business_basic",
   "instagram_manage_comments",
   "instagram_business_manage_messages",
+  "pages_show_list",
+  "pages_read_engagement",
 ].join(",");
 
 function getInstagramAuthUrl(userId: string) {
   const state = encodeURIComponent(userId);
   return (
-    `https://www.instagram.com/oauth/authorize` +
+    `https://www.facebook.com/dialog/oauth` +
     `?client_id=${META_APP_ID}` +
     `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
     `&scope=${SCOPES}` +
