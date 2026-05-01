@@ -23,17 +23,15 @@ type Settings = {
 const META_APP_ID = "1015148554407217";
 const REDIRECT_URI = "https://instaflow-dashboard.vercel.app/auth/instagram/callback";
 const SCOPES = [
-  "instagram_business_basic",
+  "instagram_basic",
   "instagram_manage_comments",
-  "instagram_business_manage_messages",
-  "pages_show_list",
-  "pages_read_engagement",
+  "instagram_manage_messages",
 ].join(",");
 
 function getInstagramAuthUrl(userId: string) {
   const state = encodeURIComponent(userId);
   return (
-    `https://www.facebook.com/dialog/oauth` +
+    `https://api.instagram.com/oauth/authorize` +
     `?client_id=${META_APP_ID}` +
     `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
     `&scope=${SCOPES}` +
