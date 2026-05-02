@@ -20,19 +20,20 @@ type Settings = {
   subscription_plan: string;
 };
 
-const META_APP_ID = "1015148554407217";
+const INSTAGRAM_APP_ID = "1617505369513918";
 const REDIRECT_URI = "https://instaflow-dashboard.vercel.app/auth/instagram/callback";
 const SCOPES = [
-  "instagram_basic",
+  "instagram_business_basic",
   "instagram_manage_comments",
-  "instagram_manage_messages",
+  "instagram_business_manage_messages",
 ].join(",");
 
 function getInstagramAuthUrl(userId: string) {
   const state = encodeURIComponent(userId);
   return (
-    `https://api.instagram.com/oauth/authorize` +
-    `?client_id=${META_APP_ID}` +
+    `https://www.instagram.com/oauth/authorize` +
+    `?force_reauth=true` +
+    `&client_id=${INSTAGRAM_APP_ID}` +
     `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
     `&scope=${SCOPES}` +
     `&response_type=code` +
