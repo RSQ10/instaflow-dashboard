@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Instagram, Loader2, Check, Sparkles, Crown, Rocket, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,8 +19,6 @@ type Settings = {
   instagram_user_id: string | null;
   subscription_plan: string;
 };
-
-const RAZORPAY_KEY_ID = "rzp_live_SlIm6fTWPO5ddO";
 
 const INSTAGRAM_APP_ID = "1617505369513918";
 const REDIRECT_URI = "https://instaflow-dashboard.vercel.app/auth/instagram/callback";
@@ -48,39 +46,24 @@ const PLANS = [
     id: "free",
     name: "Free",
     price: "₹0",
-    amount: 0,
     icon: Sparkles,
     perks: ["1 DM flow", "100 leads / mo", "Basic AI replies"],
   },
   {
     id: "pro",
     name: "Pro",
-    price: "₹399",
-    amount: 39900,
+    price: "₹999",
     icon: Rocket,
     perks: ["Unlimited flows", "10k leads / mo", "Priority AI", "Comment triggers"],
   },
   {
     id: "scale",
     name: "Scale",
-    price: "₹999",
-    amount: 99900,
+    price: "₹2,999",
     icon: Crown,
     perks: ["Everything in Pro", "Unlimited leads", "Multi-account", "Dedicated support"],
   },
 ];
-
-// Load Razorpay script
-function loadRazorpay(): Promise<boolean> {
-  return new Promise((resolve) => {
-    if ((window as any).Razorpay) { resolve(true); return; }
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-}
 
 function SettingsPage() {
   const { user } = useAuth();
@@ -100,6 +83,7 @@ function SettingsPage() {
     enabled: !!user,
   });
 
+  // Check if we're returning from Instagram OAuth callback
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const connected = params.get("instagram_connected");
@@ -107,6 +91,7 @@ function SettingsPage() {
     if (connected === "true" && handle) {
       toast.success(`Instagram @${handle} connected successfully! 🎉`);
       qc.invalidateQueries({ queryKey: ["settings"] });
+      // Clean up URL
       window.history.replaceState({}, "", window.location.pathname);
     }
   }, []);
@@ -132,65 +117,17 @@ function SettingsPage() {
     onError: () => toast.error("Failed to disconnect"),
   });
 
-  const payMut = useMutation({
-    mutationFn: async (plan: typeof PLANS[number]) => {
-      if (!user) throw new Error("Not logged in");
-
-      // 1. Create Razorpay order via Edge Function
-      const { data, error } = await supabase.functions.invoke("razorpay-order", {
-        body: { action: "create", plan: plan.id, userId: user.id },
-      });
-      if (error || !data?.orderId) throw new Error(error?.message || "Failed to create order");
-
-      // 2. Load Razorpay checkout
-      const loaded = await loadRazorpay();
-      if (!loaded) throw new Error("Failed to load Razorpay. Check your internet connection.");
-
-      // 3. Open Razorpay checkout — returns a promise that resolves on success
-      await new Promise<void>((resolve, reject) => {
-        const rzp = new (window as any).Razorpay({
-          key: RAZORPAY_KEY_ID,
-          amount: data.amount,
-          currency: "INR",
-          name: "Replyloop",
-          description: `${plan.name} Plan — ₹${plan.price}/mo`,
-          order_id: data.orderId,
-          prefill: { email: user.email ?? "" },
-          theme: { color: "#7c3aed" },
-          handler: async (response: any) => {
-            // 4. Verify payment server-side — ONLY switches plan if signature is valid
-            const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
-              "razorpay-order",
-              {
-                body: {
-                  action: "verify",
-                  plan: plan.id,
-                  userId: user.id,
-                  orderId: response.razorpay_order_id,
-                  paymentId: response.razorpay_payment_id,
-                  signature: response.razorpay_payment_signature,
-                },
-              }
-            );
-            if (verifyError || !verifyData?.success) {
-              reject(new Error("Payment verification failed. Contact support."));
-              return;
-            }
-            resolve();
-          },
-          modal: {
-            ondismiss: () => reject(new Error("DISMISSED")),
-          },
-        });
-        rzp.open();
-      });
+  const planMut = useMutation({
+    mutationFn: async (plan: string) => {
+      if (!user) return;
+      const { error } = await supabase
+        .from("user_settings")
+        .upsert({ user_id: user.id, subscription_plan: plan }, { onConflict: "user_id" });
+      if (error) throw error;
     },
     onSuccess: (_d, plan) => {
-      toast.success(`🎉 Upgraded to ${plan.name} plan!`);
+      toast.success(`Switched to ${plan} plan`);
       qc.invalidateQueries({ queryKey: ["settings"] });
-    },
-    onError: (e: Error) => {
-      if (e.message !== "DISMISSED") toast.error(e.message);
     },
   });
 
@@ -212,7 +149,7 @@ function SettingsPage() {
         Manage your Instagram connection and plan.
       </p>
 
-      {/* Instagram Connection */}
+      {/* Instagram Connection Section */}
       <section className="mt-8 glass rounded-2xl border border-border p-6 shadow-soft animate-fade-in-up">
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-brand">
@@ -232,7 +169,7 @@ function SettingsPage() {
               <>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Connected as{" "}
-                  
+                  <a
                     href={`https://instagram.com/${settings.instagram_handle}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -248,12 +185,16 @@ function SettingsPage() {
                     onClick={() => disconnectMut.mutate()}
                     disabled={disconnectMut.isPending}
                   >
-                    {disconnectMut.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {disconnectMut.isPending && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     Disconnect
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => { if (user) window.location.href = getInstagramAuthUrl(user.id); }}
+                    onClick={() => {
+                      if (user) window.location.href = getInstagramAuthUrl(user.id);
+                    }}
                   >
                     Reconnect
                   </Button>
@@ -266,14 +207,16 @@ function SettingsPage() {
                 </p>
                 <div className="mt-4">
                   <Button
-                    onClick={() => { if (user) window.location.href = getInstagramAuthUrl(user.id); }}
+                    onClick={() => {
+                      if (user) window.location.href = getInstagramAuthUrl(user.id);
+                    }}
                     className="bg-gradient-brand text-white shadow-soft hover:opacity-95 gap-2"
                   >
                     <Instagram className="h-4 w-4" />
                     Connect Instagram Account
                   </Button>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    You'll be redirected to Instagram to authorize.
+                    You'll be redirected to Instagram to authorize SmoothChat.
                   </p>
                 </div>
               </>
@@ -285,12 +228,11 @@ function SettingsPage() {
       {/* Subscription Plans */}
       <section className="mt-8">
         <h2 className="font-display text-lg font-semibold">Subscription plan</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Upgrade anytime. Payments are secure via Razorpay.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Upgrade anytime, cancel anytime.</p>
         <div className="mt-5 grid gap-4 perspective-card md:grid-cols-3">
           {PLANS.map((plan) => {
             const active = currentPlan === plan.id;
             const Icon = plan.icon;
-            const isPaying = payMut.isPending && (payMut.variables as any)?.id === plan.id;
             return (
               <div
                 key={plan.id}
@@ -314,9 +256,7 @@ function SettingsPage() {
                 <h3 className="mt-4 font-display text-xl font-bold">{plan.name}</h3>
                 <div className="mt-1 flex items-baseline gap-1">
                   <span className="font-display text-3xl font-bold">{plan.price}</span>
-                  {plan.amount > 0 && (
-                    <span className="text-sm text-muted-foreground">/mo</span>
-                  )}
+                  <span className="text-sm text-muted-foreground">/mo</span>
                 </div>
                 <ul className="mt-4 space-y-2">
                   {plan.perks.map((p) => (
@@ -328,16 +268,15 @@ function SettingsPage() {
                 </ul>
                 <Button
                   variant={active ? "outline" : "default"}
-                  disabled={active || payMut.isPending}
-                  onClick={() => plan.amount > 0 && payMut.mutate(plan)}
+                  disabled={active || planMut.isPending}
+                  onClick={() => planMut.mutate(plan.id)}
                   className={
                     active
                       ? "mt-5 w-full"
                       : "mt-5 w-full bg-gradient-brand text-white hover:opacity-95"
                   }
                 >
-                  {isPaying && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {active ? "Current plan" : plan.amount === 0 ? "Free plan" : `Upgrade — ${plan.price}`}
+                  {active ? "Current plan" : `Switch to ${plan.name}`}
                 </Button>
               </div>
             );
